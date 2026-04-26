@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Docs | Sentinel-X</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><polygon points='50 5, 90 25, 90 75, 50 95, 10 75, 10 25' fill='%23080A0E' stroke='%236366F1' stroke-width='8'/><circle cx='50' cy='50' r='15' fill='%236366F1'/></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/global.css">
+    <style>
+        .workflow-step { margin-bottom: 24px; padding-left: 20px; border-left: 2px solid var(--border-dim); position: relative; }
+        .workflow-step::before { content: ""; position: absolute; left: -7px; top: 0; width: 12px; height: 12px; border-radius: 50%; background: var(--accent-primary); box-shadow: 0 0 10px var(--accent-glow); }
+        .tech-tag { display: inline-block; padding: 4px 10px; background: rgba(255,255,255,0.05); border: 1px solid var(--border-dim); border-radius: 20px; font-size: 0.75rem; color: var(--text-secondary); margin-right: 6px; margin-bottom: 6px; }
+    </style>
+</head>
+<body>
+    <div class="ambient-bg"><div class="orb orb-1"></div><div class="orb orb-2"></div></div>
+
+    <nav class="navbar">
+        <a href="index.html" class="brand">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-primary)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Sentinel-X
+        </a>
+        <div class="nav-links">
+            <a href="dashboard.html">Console</a>
+            <a href="docs.html" class="active">Docs</a>
+            <a href="about.html">About</a>
+            <a href="auth.html" class="btn">Sign In</a>
+        </div>
+    </nav>
+
+    <main class="container">
+        <header style="margin-bottom: 40px;">
+            <h1 style="font-size: 2rem; letter-spacing: -1px; margin-bottom: 8px;">Architecture & Workflow</h1>
+            <p style="color: var(--text-secondary); max-width: 600px;">Understanding the hybrid DevSecOps deployment pipeline.</p>
+        </header>
+
+        <div class="card interactive" style="margin-bottom: 32px;">
+            <h3 style="margin-bottom: 20px; color: var(--accent-primary);">The Technology Stack</h3>
+            <div>
+                <span class="tech-tag">Node.js (C2 Server)</span>
+                <span class="tech-tag">Python 3 (Exploit Agent)</span>
+                <span class="tech-tag">Supabase (PostgreSQL Auth & Telemetry)</span>
+                <span class="tech-tag">Vanilla JS (SPA Architecture)</span>
+            </div>
+        </div>
+
+        <div class="card interactive">
+            <h3 style="margin-bottom: 24px; color: var(--accent-primary);">Execution Pipeline</h3>
+            
+            <div class="workflow-step">
+                <h4 style="font-size: 1.05rem; margin-bottom: 8px;">1. Target Initialization</h4>
+                <p style="color: var(--text-secondary); font-size: 0.9rem;">The user defines a target URL via the frontend UI. The request is securely routed to the Node.js Command & Control (C2) server.</p>
+            </div>
+            
+            <div class="workflow-step">
+                <h4 style="font-size: 1.05rem; margin-bottom: 8px;">2. Agent Deployment</h4>
+                <p style="color: var(--text-secondary); font-size: 0.9rem;">The C2 server spawns an isolated Python agent via <code>child_process</code>. The agent fires safe, non-destructive payloads to test for SSRF, SSTI, SQLi, and XSS.</p>
+            </div>
+
+            <div class="workflow-step" style="border-left-color: transparent;">
+                <h4 style="font-size: 1.05rem; margin-bottom: 8px;">3. Auto-Remediation & Telemetry</h4>
+                <p style="color: var(--text-secondary); font-size: 0.9rem;">Detected vulnerabilities trigger the generation of a sanitized Node.js patch. Telemetry is logged to Supabase, and the patch is streamed back to the client interface.</p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="cyber-footer">
+        <div class="footer-content">
+            <div class="footer-left">
+                <span class="sys-version">V 2.6.0.44 | NODE_ID: alpha-7 | ENCRYPTED</span>
+            </div>
+            <div class="footer-center">
+                <span class="copyright">© 2026 Sentinel-X Systems. All rights reserved.</span>
+            </div>
+            <div class="footer-right">
+                <a href="privacy.html">Privacy Protocol</a>
+                <a href="terms.html">Terms of Service</a>
+                <a href="security.html">Security Disclosure</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/app.js"></script>
+</body>
+</html>

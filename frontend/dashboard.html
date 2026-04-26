@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Console | Sentinel-X</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><polygon points='50 5, 90 25, 90 75, 50 95, 10 75, 10 25' fill='%23080A0E' stroke='%236366F1' stroke-width='8'/><circle cx='50' cy='50' r='15' fill='%236366F1'/></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/global.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        async function enforceSecurity() {
+            try {
+                // 1. Check if the browser blocked the database script
+                if (!window.supabase) {
+                    throw new Error("Supabase CDN blocked.");
+                }
+
+                // 2. Safely initialize
+                const supabase = window.supabase.createClient(
+                    'https://sgimhtcmtyntufnytqaf.supabase.co',
+                    'sb_publishable_QTTYkptrzgfOnDMTmvSH7g_Imn9ytgB'
+                );
+
+                // 3. Check for the session
+                const { data: { session }, error } = await supabase.auth.getSession();
+                
+                if (!session || error) {
+                    // Kick them to login
+                    window.location.replace('auth.html');
+                } else {
+                    // Identity verified! Drop the cloak.
+                    document.body.style.visibility = 'visible';
+                }
+            } catch (err) {
+                // If literally anything goes wrong (CDN blocked, script crash), 
+                // ALWAYS kick them back to the login page safely.
+                console.error(err);
+                window.location.replace('auth.html');
+            }
+        }
+        
+        enforceSecurity();
+
+        // THE KILL SWITCH: Actively destroy the session token
+        async function executeLogout(e) {
+            e.preventDefault(); // Stop the default link behavior
+            
+            try {
+                // Safely grab the database connection
+                const supabase = window.supabase.createClient(
+                    'https://sgimhtcmtyntufnytqaf.supabase.co',
+                    'sb_publishable_QTTYkptrzgfOnDMTmvSH7g_Imn9ytgB'
+                );
+                
+                // 1. Tell Supabase to permanently destroy the session token
+                await supabase.auth.signOut();
+                
+                // 2. Redirect back to the index page ONLY after the token is dead
+                window.location.replace('index.html');
+            } catch (err) {
+                console.error("Logout failed:", err);
+                // Fallback: force redirect even if the API call fails
+                window.location.replace('index.html');
+            }
+        }
+    </script>
+    <style>
+        body { visibility: hidden; } /* THE CLOAK: Hide everything until verified */
+        .console-wrapper { width: 100%; max-width: 1100px; margin: 0 auto; display: flex; flex-direction: column; height: 75vh; }
+        .glass-terminal { flex-grow: 1; display: flex; flex-direction: column; background: rgba(10, 12, 16, 0.85); backdrop-filter: blur(20px); border: 1px solid var(--border-bright); border-radius: 12px; box-shadow: 0 30px 60px rgba(0,0,0,0.5); overflow: hidden; }
+        .terminal-header { display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; background: rgba(255,255,255,0.02); border-bottom: 1px solid var(--border-dim); }
+        .terminal-dots { display: flex; gap: 8px; }
+        .terminal-dots span { width: 12px; height: 12px; border-radius: 50%; background: #3A3F48; }
+        .terminal-dots span:nth-child(1) { background: #FF5F56; }
+        .terminal-dots span:nth-child(2) { background: #FFBD2E; }
+        .terminal-dots span:nth-child(3) { background: #27C93F; }
+        .terminal-title { font-family: monospace; font-size: 0.85rem; color: var(--text-secondary); }
+        .terminal-window { flex-grow: 1; padding: 24px; overflow-y: auto; font-family: 'Courier New', monospace; font-size: 0.95rem; line-height: 1.6; color: var(--text-primary); }
+        .t-sys { color: var(--text-secondary); } .t-cmd { color: var(--text-primary); } .t-err { color: #F2555A; } .t-success { color: #4CC38A; } .t-info { color: var(--accent-primary); }
+        .t-patch { color: #A0AABF; margin: 12px 0; padding: 16px; background: rgba(0,0,0,0.5); border-radius: 6px; border: 1px solid var(--border-dim); }
+        .terminal-input-line { display: flex; align-items: center; padding-top: 10px; }
+        .terminal-prompt { color: var(--accent-primary); margin-right: 12px; font-weight: bold; white-space: nowrap; }
+        .terminal-input { flex-grow: 1; background: transparent; border: none; color: var(--text-primary); font-family: 'Courier New', monospace; font-size: 0.95rem; outline: none; }
+    </style>
+</head>
+<body>
+    <div class="ambient-bg"><div class="orb orb-1"></div><div class="orb orb-2"></div><div class="grid-overlay"></div></div>
+
+    <nav class="navbar">
+        <a href="index.html" class="brand"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-primary)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Sentinel-X</a>
+        <div class="nav-links">
+            <a href="dashboard.html" class="active">Console</a>
+            <a href="docs.html">Docs</a>
+            <a href="about.html">About</a>
+            <a href="#" onclick="executeLogout(event)" style="cursor: pointer;">Sign Out</a>
+        </div>
+    </nav>
+
+    <main class="container" style="max-width: 1200px;">
+        <div class="console-wrapper">
+            <div class="glass-terminal interactive card" style="padding: 0;">
+                <div class="terminal-header">
+                    <div class="terminal-dots"><span></span><span></span><span></span></div>
+                    <div class="terminal-title">root@sentinel-x: /sys/agent</div><div></div>
+                </div>
+                <div class="terminal-window" id="terminal-window">
+                    <div class="t-sys">Sentinel-X Agentic Core v2.0 initialized. Type 'help' for commands.</div>
+                    <div id="terminal-history"></div>
+                    <div class="terminal-input-line">
+                        <span class="terminal-prompt">root@sentinel-x:~#</span>
+                        <input type="text" id="terminal-input" class="terminal-input" autocomplete="off" spellcheck="false" autofocus>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="ai-chat-widget" class="chat-widget hidden">
+        <div class="chat-header">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <svg viewBox="0 0 100 100" width="28" height="28" style="filter: drop-shadow(0 0 6px #6366F1);">
+                    <polygon points="50 5, 90 25, 90 75, 50 95, 10 75, 10 25" fill="rgba(99, 102, 241, 0.05)" stroke="#6366F1" stroke-width="4"/>
+                    <circle cx="50" cy="50" r="22" fill="rgba(99, 102, 241, 0.15)" stroke="#6366F1" stroke-width="2"/>
+                    <circle cx="50" cy="50" r="8" fill="#6366F1"/>
+                    <line x1="50" y1="5" x2="50" y2="28" stroke="#6366F1" stroke-width="2" opacity="0.7"/>
+                    <line x1="50" y1="95" x2="50" y2="72" stroke="#6366F1" stroke-width="2" opacity="0.7"/>
+                    <line x1="10" y1="25" x2="31" y2="38" stroke="#6366F1" stroke-width="2" opacity="0.7"/>
+                    <line x1="90" y1="75" x2="69" y2="62" stroke="#6366F1" stroke-width="2" opacity="0.7"/>
+                </svg>
+                <div class="terminal-title" style="color: #6366F1; font-weight: bold; letter-spacing: 1px; text-shadow: 0 0 5px rgba(99, 102, 241, 0.5);">CYPHERVAULT AI</div>
+            </div>
+            <button id="close-chat" class="close-btn">&times;</button>
+        </div>
+            <div class="chat-window" id="chat-window">
+                <div class="msg ai-msg">System Online. I am CypherVault, your DevSecOps Copilot. How can I assist you with your infrastructure today?</div>
+            </div>
+        <div class="chat-input-area">
+            <input type="text" id="chat-input" placeholder="Ask about vulnerabilities, logs, or patches..." autocomplete="off">
+            <button id="send-chat" class="btn-primary" style="padding: 0 16px;">&gt;</button>
+        </div>
+    </div>
+
+    <button id="ai-trigger-btn" class="ai-float-btn">
+        <svg viewBox="0 0 100 100" width="36" height="36" style="filter: drop-shadow(0 0 8px #6366F1);">
+            <polygon points="50 5, 90 25, 90 75, 50 95, 10 75, 10 25" fill="rgba(99, 102, 241, 0.05)" stroke="#6366F1" stroke-width="4"/>
+            <circle cx="50" cy="50" r="22" fill="rgba(99, 102, 241, 0.15)" stroke="#6366F1" stroke-width="2"/>
+            <circle cx="50" cy="50" r="8" fill="#6366F1"/>
+            <line x1="50" y1="5" x2="50" y2="28" stroke="#6366F1" stroke-width="2" opacity="0.7"/>
+            <line x1="50" y1="95" x2="50" y2="72" stroke="#6366F1" stroke-width="2" opacity="0.7"/>
+            <line x1="10" y1="25" x2="31" y2="38" stroke="#6366F1" stroke-width="2" opacity="0.7"/>
+            <line x1="90" y1="75" x2="69" y2="62" stroke="#6366F1" stroke-width="2" opacity="0.7"/>
+        </svg>
+    </button>
+    
+    <footer class="cyber-footer">
+        <div class="footer-content">
+            <div class="footer-left">
+                <span class="sys-version">V 2.6.0.44 | NODE_ID: alpha-7 | ENCRYPTED</span>
+            </div>
+            <div class="footer-center">
+                <span class="copyright">© 2026 Sentinel-X Systems. All rights reserved.</span>
+            </div>
+            <div class="footer-right">
+                <a href="privacy.html">Privacy Protocol</a>
+                <a href="terms.html">Terms of Service</a>
+                <a href="security.html">Security Disclosure</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/app.js"></script>
+</body>
+</html>

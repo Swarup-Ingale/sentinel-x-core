@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About | Sentinel-X</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><polygon points='50 5, 90 25, 90 75, 50 95, 10 75, 10 25' fill='%23080A0E' stroke='%236366F1' stroke-width='8'/><circle cx='50' cy='50' r='15' fill='%236366F1'/></svg>">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/global.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // Global Logout Function
+        async function executeLogout(e) {
+            if (e) e.preventDefault();
+            try {
+                const supabase = window.supabase.createClient(
+                    'https://sgimhtcmtyntufnytqaf.supabase.co',
+                    'sb_publishable_QTTYkptrzgfOnDMTmvSH7g_Imn9ytgB'
+                );
+                await supabase.auth.signOut();
+                window.location.replace('index.html');
+            } catch (err) {
+                window.location.replace('index.html');
+            }
+        }
+    </script>
+
+    <style>
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 20px rgba(99, 102, 241, 0.2); }
+            50% { box-shadow: 0 0 40px rgba(99, 102, 241, 0.5); }
+            100% { box-shadow: 0 0 20px rgba(99, 102, 241, 0.2); }
+        }
+
+        .about-container { max-width: 1100px; margin: 80px auto; padding: 0 24px; }
+        
+        .about-header { text-align: center; margin-bottom: 56px; animation: fadeUp 0.8s ease forwards; }
+        .about-header h1 { 
+            font-size: 3rem; font-weight: 700; letter-spacing: -1px; margin-bottom: 12px;
+            background: linear-gradient(135deg, #fff 0%, #a0aabf 100%);
+            -webkit-background-clip: text; background-clip: text;
+            -webkit-text-fill-color: transparent; color: transparent;
+        }
+        .about-header p { color: #6366F1; font-family: 'Fira Code', monospace; font-size: 1rem; letter-spacing: 1px; text-transform: uppercase; }
+
+        .about-grid { display: grid; grid-template-columns: 350px 1fr; gap: 40px; }
+        
+        .profile-card { 
+            background: rgba(10, 12, 16, 0.7); backdrop-filter: blur(24px); 
+            border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 16px; 
+            padding: 40px 32px; text-align: center; 
+            box-shadow: inset 0 0 30px rgba(99, 102, 241, 0.05), 0 20px 40px rgba(0,0,0,0.8);
+            animation: fadeUp 0.8s ease 0.2s forwards; opacity: 0;
+            display: flex; flex-direction: column; align-items: center;
+        }
+        
+        .profile-img-container { 
+            width: 150px; height: 150px; margin: 0 auto 24px auto; 
+            border-radius: 50%; padding: 3px; 
+            background: linear-gradient(135deg, #6366F1, #2e3192); 
+            animation: pulseGlow 4s infinite alternate;
+        }
+        .profile-img { 
+            width: 100%; height: 100%; border-radius: 50%; 
+            object-fit: cover; border: 4px solid #080A0E; 
+        }
+        
+        .profile-name { font-size: 1.8rem; color: #fff; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.5px; }
+        .profile-title { color: #A0AABF; font-size: 1rem; margin-bottom: 32px; }
+        
+        .operator-stats { width: 100%; display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px; }
+        .stat-row { display: flex; justify-content: space-between; padding: 12px; background: rgba(0,0,0,0.4); border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); }
+        .stat-label { color: #A0AABF; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
+        .stat-value { color: #4CC38A; font-family: 'Fira Code', monospace; font-size: 0.85rem; font-weight: 500; }
+        .stat-value.global { color: #FFBD2E; font-weight: bold; text-shadow: 0 0 5px rgba(255, 189, 46, 0.4); }
+
+        .social-links { display: flex; justify-content: center; gap: 12px; width: 100%; flex-wrap: wrap; }
+        .social-btn { 
+            background: rgba(99, 102, 241, 0.05); border: 1px solid rgba(99, 102, 241, 0.3); 
+            width: 45px; height: 45px; border-radius: 12px; 
+            display: flex; align-items: center; justify-content: center; color: #fff; 
+            text-decoration: none; transition: all 0.3s ease; 
+        }
+        .social-btn:hover { border-color: #6366F1; background: rgba(99, 102, 241, 0.2); transform: translateY(-5px); box-shadow: 0 10px 20px rgba(99, 102, 241, 0.2); }
+
+        .bio-section { display: flex; flex-direction: column; gap: 32px; animation: fadeUp 0.8s ease 0.4s forwards; opacity: 0; }
+        .bio-text { background: transparent; padding: 0; color: #A0AABF; line-height: 1.8; font-size: 1.1rem; font-weight: 300; }
+        .bio-text p { margin-bottom: 20px; }
+        .bio-text p b { color: #fff; font-weight: 500; }
+        
+        .skills-terminal { 
+            background: #050608; border: 1px solid #3730A3; border-radius: 12px; 
+            overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+            height: 380px; display: flex; flex-direction: column; cursor: text;
+        }
+        .skills-header { background: rgba(99, 102, 241, 0.05); border-bottom: 1px solid #3730A3; padding: 12px 20px; display: flex; align-items: center; gap: 8px; cursor: default; }
+        .skills-header span { width: 12px; height: 12px; border-radius: 50%; background: #3A3F48; }
+        .skills-header span:nth-child(1) { background: #FF5F56; }
+        .skills-header span:nth-child(2) { background: #FFBD2E; }
+        .skills-header span:nth-child(3) { background: #27C93F; }
+        .term-title { margin-left: 12px; font-family: 'Fira Code', monospace; font-size: 0.8rem; color: #6366F1; }
+        
+        .skills-content { 
+            padding: 24px 32px; font-family: 'Fira Code', monospace; font-size: 0.95rem; 
+            color: #A0AABF; line-height: 1.7; overflow-y: auto; flex-grow: 1;
+        }
+        .sc-prompt { color: #4CC38A; }
+        .sc-cmd { color: #fff; }
+        .sc-key { color: #6366F1; }
+        .sc-string { color: #FFBD2E; }
+
+        .about-term-input { 
+            background: transparent; border: none; color: #fff; 
+            font-family: 'Fira Code', monospace; font-size: 0.95rem; outline: none; flex-grow: 1; 
+        }
+
+        @media (max-width: 900px) {
+            .about-grid { grid-template-columns: 1fr; }
+            .profile-card { padding: 32px 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="ambient-bg"><div class="orb orb-1" style="background: radial-gradient(circle, rgba(99,102,241,0.1) 0%, rgba(0,0,0,0) 70%);"></div><div class="grid-overlay"></div></div>
+
+    <nav class="navbar">
+        <a href="index.html" class="brand">
+            <svg viewBox="0 0 100 100" width="22" height="22">
+                <polygon points="50 5, 90 25, 90 75, 50 95, 10 75, 10 25" fill="none" stroke="#6366F1" stroke-width="8"/>
+                <circle cx="50" cy="50" r="15" fill="#6366F1"/>
+            </svg>
+            Sentinel-X
+        </a>
+        <div class="nav-links">
+            <a href="dashboard.html">Console</a>
+            <a href="docs.html">Docs</a>
+            <a href="about.html" class="active">About</a>
+            <a href="#" onclick="executeLogout(event)">Sign Out</a>
+        </div>
+    </nav>
+
+    <main class="about-container">
+        <div class="about-header">
+            <h1>Swarup Ingale</h1>
+            <p>Lead Architect & Security Researcher</p>
+        </div>
+
+        <div class="about-grid">
+            <div class="profile-card">
+                <div class="profile-img-container">
+                    <img src="https://github.com/Swarup-Ingale.png" alt="Swarup Ingale" class="profile-img" 
+                        onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><rect width=\'100\' height=\'100\' fill=\'%23080A0E\'/><text x=\'50\' y=\'55\' font-family=\'monospace\' font-weight=\'bold\' font-size=\'45\' fill=\'%236366F1\' text-anchor=\'middle\' dominant-baseline=\'middle\'>S</text></svg>'">
+                </div>
+                <h2 class="profile-name">Swarup Ingale</h2>
+                <div class="profile-title">Full-Stack DevSecOps Engineer</div>
+                
+                <div class="operator-stats">
+                    <div class="stat-row">
+                        <span class="stat-label">HackX CTF</span>
+                        <span class="stat-value global">Global Rank 4</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Uni6 CTF</span>
+                        <span class="stat-value global">National Rank 27</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Dark CTF</span>
+                        <span class="stat-value">Rank 100</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Redfox CTF</span>
+                        <span class="stat-value">Rank 155</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Clearance</span>
+                        <span class="stat-value" style="color: #6366F1;">Root</span>
+                    </div>
+                </div>
+
+                <div class="social-links">
+                    <a href="https://linkedin.com/in/swarup-ingale-45864b295" target="_blank" class="social-btn" title="LinkedIn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
+                    <a href="https://github.com/Swarup-Ingale" target="_blank" class="social-btn" title="GitHub"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg></a>
+                    <a href="https://swale.medium.com" class="social-btn" title="Medium"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M13.54 12a6.8 6.8 0 01-6.77 6.82A6.8 6.8 0 010 12a6.8 6.8 0 016.77-6.82A6.8 6.8 0 0113.54 12zM20.96 12c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42c1.87 0 3.38 2.88 3.38 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12z"/></svg></a>
+                    <a href="#" class="social-btn" title="Portfolio"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></a>
+                </div>
+            </div>
+
+            <div class="bio-section">
+                <div class="bio-text">
+                    <p>Engineering student based in Mumbai, specializing in <b>offensive security</b>, <b>cryptography</b>, and <b>full-stack architecture</b>. With an extensive background in competitive Capture The Flag (CTF) environments and IoT hardware engineering, my focus is on bridging the gap between automated vulnerability reconnaissance and scalable C2 infrastructure.</p>
+                    <p>Sentinel-X was engineered to provide DevSecOps teams with an intuitive, terminal-driven environment capable of executing complex heuristic network scans and delivering actionable, AI-driven remediation intelligence in real-time.</p>
+                </div>
+
+                <div class="skills-terminal" onclick="document.getElementById('about-cmd-input').focus()">
+                    <div class="skills-header">
+                        <span></span><span></span><span></span>
+                        <div class="term-title">root@sentinel-x: /var/log/operator</div>
+                    </div>
+                    <div class="skills-content" id="about-term-window">
+                        <div style="color: #A0AABF; margin-bottom: 16px;">Sentinel-X Identity Matrix initialized. Type <span class="sc-key">'help'</span> for available commands.</div>
+                        <div id="about-term-history"></div>
+                        
+                        <div style="display: flex; align-items: center; margin-top: 8px;">
+                            <span class="sc-prompt" style="margin-right: 12px;">root@sentinel-x:~#</span>
+                            <input type="text" id="about-cmd-input" class="about-term-input" autocomplete="off" spellcheck="false" autofocus>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="cyber-footer">
+        <div class="footer-content">
+            <div class="footer-left">
+                <span class="sys-version">V 2.6.0.44 | NODE_ID: alpha-7 | ENCRYPTED</span>
+            </div>
+            <div class="footer-center">
+                <span class="copyright">© 2026 Sentinel-X Systems. All rights reserved.</span>
+            </div>
+            <div class="footer-right">
+                <a href="privacy.html">Privacy Protocol</a>
+                <a href="terms.html">Terms of Service</a>
+                <a href="security.html">Security Disclosure</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const inputField = document.getElementById('about-cmd-input');
+        const historyDiv = document.getElementById('about-term-history');
+        const windowDiv = document.getElementById('about-term-window');
+        
+        // Terminal History Array for Up/Down Navigation
+        const commandHistory = [];
+        let historyIndex = -1;
+
+        inputField.addEventListener('keydown', function(e) {
+            // ARROW UP - Retrieve previous command
+            if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                if (historyIndex > 0) {
+                    historyIndex--;
+                    inputField.value = commandHistory[historyIndex];
+                } else if (historyIndex === 0) {
+                    inputField.value = commandHistory[0];
+                }
+            } 
+            // ARROW DOWN - Navigate to newer commands
+            else if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                if (historyIndex < commandHistory.length - 1) {
+                    historyIndex++;
+                    inputField.value = commandHistory[historyIndex];
+                } else {
+                    historyIndex = commandHistory.length;
+                    inputField.value = '';
+                }
+            }
+            // ENTER - Execute Command
+            else if (e.key === 'Enter') {
+                const cmd = inputField.value.trim().toLowerCase();
+                inputField.value = ''; 
+                
+                if (cmd !== '') {
+                    commandHistory.push(cmd);
+                    historyIndex = commandHistory.length;
+                    historyDiv.innerHTML += `<div><span class="sc-prompt">root@sentinel-x:~#</span> <span class="sc-cmd">${cmd}</span></div>`;
+                }
+
+                // Command Logic Engine
+                if (cmd === '') {
+                    // Do nothing on empty enter
+                } else if (cmd === 'help') {
+                    historyDiv.innerHTML += `
+                        <div style="color: #A0AABF; margin: 8px 0 16px 12px;">
+                            <span class="sc-key" style="display:inline-block; width: 80px;">whoami</span>  - Display operator profile<br>
+                            <span class="sc-key" style="display:inline-block; width: 80px;">skills</span>  - Dump full technical matrix<br>
+                            <span class="sc-key" style="display:inline-block; width: 80px;">ctf</span>     - View global hacking rankings<br>
+                            <span class="sc-key" style="display:inline-block; width: 80px;">socials</span> - Display network uplink URLs<br>
+                            <span class="sc-key" style="display:inline-block; width: 80px;">reboot</span>  - Sever C2 connection and restart<br>
+                            <span class="sc-key" style="display:inline-block; width: 80px;">clear</span>   - Clear terminal output
+                        </div>`;
+                } else if (cmd === 'whoami' || cmd === 'info') {
+                    historyDiv.innerHTML += `
+                        <div style="margin: 8px 0 16px 0;">
+                        {<br>
+                        &nbsp;&nbsp;<span class="sc-key">"id"</span>: <span class="sc-string">"swarup_ingale"</span>,<br>
+                        &nbsp;&nbsp;<span class="sc-key">"role"</span>: <span class="sc-string">"Security Researcher & DevSecOps Engineer"</span>,<br>
+                        &nbsp;&nbsp;<span class="sc-key">"location"</span>: <span class="sc-string">"Mumbai, Maharashtra"</span><br>
+                        }
+                        </div>`;
+                } else if (cmd === 'skills') {
+                    // MASSIVELY EXPANDED SKILLS MATRIX
+                    historyDiv.innerHTML += `
+                        <div style="margin: 8px 0 16px 0;">
+                        {<br>
+                        &nbsp;&nbsp;<span class="sc-key">"offensive_security"</span>: [<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="sc-string">"Web Exploitation & Network Reconnaissance"</span>,<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="sc-string">"SSRF, SSTI, IDOR, & XSS Mitigation"</span><br>
+                        &nbsp;&nbsp;],<br>
+                        &nbsp;&nbsp;<span class="sc-key">"cryptography"</span>: [<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="sc-string">"Symmetric/Asymmetric Encryption (RSA, AES)"</span>,<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="sc-string">"Binary Analysis & Side-Channel Attacks"</span><br>
+                        &nbsp;&nbsp;],<br>
+                        &nbsp;&nbsp;<span class="sc-key">"c2_architecture"</span>: [<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="sc-string">"Sentinel-X Automation Engine"</span>,<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="sc-string">"WAF & Helmet Hardening Shields"</span><br>
+                        &nbsp;&nbsp;],<br>
+                        &nbsp;&nbsp;<span class="sc-key">"engineering_stack"</span>: {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="sc-key">"backend"</span>: [<span class="sc-string">"Node.js"</span>, <span class="sc-string">"Express.js"</span>, <span class="sc-string">"Python"</span>],<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="sc-key">"frontend"</span>: [<span class="sc-string">"TypeScript"</span>, <span class="sc-string">"Glassmorphism UI"</span>],<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="sc-key">"database"</span>: [<span class="sc-string">"Supabase"</span>, <span class="sc-string">"PostgreSQL"</span>]<br>
+                        &nbsp;&nbsp;},<br>
+                        &nbsp;&nbsp;<span class="sc-key">"hardware_iot"</span>: [<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="sc-string">"Arduino Autonomous Systems"</span>,<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="sc-string">"LoRa SX1278 Comms & NEO-6M GPS"</span><br>
+                        &nbsp;&nbsp;]<br>
+                        }
+                        </div>`;
+                } else if (cmd === 'ctf') {
+                    historyDiv.innerHTML += `
+                        <div style="margin: 8px 0 16px 0; color: #4CC38A;">
+                        [*] EXECUTING CTF DATABASE QUERY...<br>
+                        [+] HackX CTF: <span style="color: #FFBD2E">Global Rank 4</span><br>
+                        [+] Uni6 CTF:  <span style="color: #FFBD2E">National Rank 27</span><br>
+                        [+] Dark CTF:  Rank 100<br>
+                        [+] Redfox CTF: Rank 155
+                        </div>`;
+                } else if (cmd === 'socials') {
+                    historyDiv.innerHTML += `
+                        <div style="margin: 8px 0 16px 0;">
+                        {<br>
+                        &nbsp;&nbsp;<span class="sc-key">"github"</span>: <a href="https://github.com/Swarup-Ingale" target="_blank" class="sc-string">"Github"</a>,<br>
+                        &nbsp;&nbsp;<span class="sc-key">"linkedin"</span>: <a href="https://linkedin.com/in/swarup-ingale-45864b295" target="_blank" class="sc-string">"Linkedin"</a>,<br>
+                        &nbsp;&nbsp;<span class="sc-key">"medium"</span>: <a href="https://swale.medium.com/" class="sc-string">"Blogs"</a>,<br>
+                        &nbsp;&nbsp;<span class="sc-key">"portfolio"</span>: <a href="#" class="sc-string">"Portfolio"</a><br>
+                        }
+                        </div>`;
+                } else if (cmd === 'reboot') {
+                    historyDiv.innerHTML += `
+                        <div style="margin: 8px 0 16px 0; color: #FFBD2E;">
+                        [!] INITIATING CRITICAL SYSTEM REBOOT...<br>
+                        [*] Severing active session tokens...<br>
+                        [*] Rerouting to root access node...
+                        </div>`;
+                    
+                    // Disable input to prevent further typing during reboot
+                    inputField.disabled = true;
+                    
+                    // Trigger the global logout function after a cool 1.5s delay
+                    setTimeout(() => {
+                        executeLogout();
+                    }, 1500);
+                } else if (cmd === 'clear') {
+                    historyDiv.innerHTML = '';
+                } else {
+                    historyDiv.innerHTML += `<div style="color: #F2555A; margin: 8px 0 16px 0;">bash: ${cmd}: command not found</div>`;
+                }
+                
+                // Auto-scroll to the bottom of the terminal window
+                windowDiv.scrollTop = windowDiv.scrollHeight;
+            }
+        });
+    </script>
+</body>
+</html>

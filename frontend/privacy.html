@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Protocol | Sentinel-X</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><polygon points='50 5, 90 25, 90 75, 50 95, 10 75, 10 25' fill='%23080A0E' stroke='%236366F1' stroke-width='8'/><circle cx='50' cy='50' r='15' fill='%236366F1'/></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/global.css">
+    <style>
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        .doc-container { max-width: 800px; margin: 80px auto; padding: 0 24px; animation: fadeUp 0.8s ease forwards; }
+        .doc-card { background: rgba(10, 12, 16, 0.7); backdrop-filter: blur(24px); border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 16px; padding: 48px; box-shadow: 0 20px 40px rgba(0,0,0,0.8); color: #A0AABF; line-height: 1.8; font-size: 1.05rem; }
+        .doc-card h1 { color: #fff; font-size: 2.5rem; margin-bottom: 8px; letter-spacing: -1px; }
+        .doc-card h2 { color: #6366F1; font-family: 'Fira Code', monospace; font-size: 1.2rem; margin-top: 40px; margin-bottom: 16px; border-bottom: 1px solid rgba(99, 102, 241, 0.2); padding-bottom: 8px; text-transform: uppercase; }
+        .doc-card p { margin-bottom: 16px; }
+        .doc-card .last-updated { font-family: 'Fira Code', monospace; font-size: 0.85rem; color: #4CC38A; margin-bottom: 32px; display: inline-block; padding: 6px 12px; background: rgba(76, 195, 138, 0.1); border-radius: 4px; border: 1px solid rgba(76, 195, 138, 0.3); }
+    </style>
+</head>
+<body>
+    <div class="ambient-bg"><div class="orb orb-1" style="background: radial-gradient(circle, rgba(99,102,241,0.1) 0%, rgba(0,0,0,0) 70%);"></div><div class="grid-overlay"></div></div>
+
+    <nav class="navbar">
+        <a href="index.html" class="brand"><svg viewBox="0 0 100 100" width="22" height="22"><polygon points="50 5, 90 25, 90 75, 50 95, 10 75, 10 25" fill="none" stroke="#6366F1" stroke-width="8"/><circle cx="50" cy="50" r="15" fill="#6366F1"/></svg>Sentinel-X</a>
+        <div class="nav-links"><a href="dashboard.html">Console</a><a href="docs.html">Docs</a><a href="about.html">About</a></div>
+    </nav>
+
+    <main class="doc-container">
+        <div class="doc-card">
+            <h1>Privacy Protocol</h1>
+            <span class="last-updated">LAST_MODIFIED: 2026-04-26 | ENCRYPTION: ACTIVE</span>
+            
+            <p>At Sentinel-X Systems, privacy is not a feature; it is the foundational architecture. This protocol outlines how telemetry and operator data are handled within our DevSecOps infrastructure.</p>
+
+            <h2>1. Zero-Knowledge Reconnaissance</h2>
+            <p>The Sentinel-X Agentic Core executes heuristic network scans purely in memory. Target URLs, payloads, and vulnerability assessments are processed transiently. We employ a strict No-Log policy for network traffic during reconnaissance operations.</p>
+
+            <h2>2. Operator Identity & Authentication</h2>
+            <p>Authentication is handled via Supabase utilizing stateless JWT (JSON Web Tokens). Passwords are cryptographically hashed using Argon2/Bcrypt before transmission. Sentinel-X does not possess the ability to reverse-engineer operator credentials.</p>
+
+            <h2>3. AI Copilot Telemetry</h2>
+            <p>Queries submitted to the CypherVault AI Copilot are transmitted securely via TLS 1.3 to the Gemini API Core. We do not store, index, or utilize your specific architectural queries to train external models.</p>
+        </div>
+    </main>
+
+    <footer class="cyber-footer">
+        <div class="footer-content">
+            <div class="footer-left"><span style="color: #6366F1; font-weight: 600;">V 2.6.0.44 | NODE_ID: alpha-7 | ENCRYPTED</span></div>
+            <div class="footer-center"><span>© 2026 Sentinel-X Systems. All rights reserved.</span></div>
+            <div class="footer-right"><a href="privacy.html" style="color: #4CC38A;">Privacy Protocol</a><a href="terms.html">Terms of Service</a><a href="security.html">Security Disclosure</a></div>
+        </div>
+    </footer>
+</body>
+</html>

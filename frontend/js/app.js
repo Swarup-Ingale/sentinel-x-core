@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
             printLog(`<div id="${loaderId}" class="t-sys">Analyzing target infrastructure and payload reflection...</div>`);
             
             try {
-                const response = await fetch('http://localhost:8080/api/scan', {
+                const response = await fetch('https://sentinel-x-api.onrender.com/api/scan', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ target })
@@ -195,7 +195,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             try {
                 // 3. Send to C2 Server (which acts as the AI proxy)
-                const response = await fetch('http://localhost:8080/api/chat', {
+                const response = await fetch('https://sentinel-x-api.onrender.com/api/chat', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ message: text })

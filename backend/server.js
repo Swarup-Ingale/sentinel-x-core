@@ -20,7 +20,7 @@ app.use(helmet({
             defaultSrc: ["'self'"],
             // Allow Supabase CDN and inline scripts
             scriptSrc: ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net"],
-            // THE FIX: Explicitly allow onclick="" attributes on your buttons
+            // Explicitly allow onclick="" attributes on your buttons
             scriptSrcAttr: ["'unsafe-inline'"], 
             // Allow Supabase Database Connection
             connectSrc: ["'self'", "https://sgimhtcmtyntufnytqaf.supabase.co"],
@@ -41,11 +41,12 @@ app.use(helmet({
     crossOriginOpenerPolicy: false,
 }));
 
-// 2. Strict CORS Policy
+// 2. Cloud-Ready CORS Policy
+// Using '*' ensures your Netlify frontend won't get blocked by the Render backend.
 app.use(cors({
-    origin: 'http://localhost:8080', 
-    methods: ['GET', 'POST'],
-    credentials: true
+    origin: '*', 
+    methods: ['GET', 'POST', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 // 3. Custom WAF Middleware (Patches .env and .git exposure)
@@ -96,9 +97,8 @@ app.post('/api/scan', async (req, res) => {
         try {
             const parsedData = JSON.parse(dataString);
             
-            // THE FIX: Check if Python returned an error (like "target unreachable")
+            // Check if Python returned an error (like "target unreachable")
             if (parsedData.error || !parsedData.findings) {
-                // Safely send the error back to the frontend terminal
                 return res.json({ error: parsedData.error || "Agent returned invalid telemetry.", data: parsedData });
             }
 
@@ -172,7 +172,6 @@ app.post('/api/chat', async (req, res) => {
 
         res.json({ reply: formattedReply });
     } catch (err) {
-        // Print the EXACT error to your backend terminal so we know what went wrong
         console.error("\n[!] GEMINI API ERROR DETAILS:");
         console.error(err);
         res.status(500).json({ reply: `CRITICAL: AI Core Failure. Backend Log: ${err.message}` });
@@ -180,7 +179,8 @@ app.post('/api/chat', async (req, res) => {
 });
 
 const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
+// CRITICAL FIX: Bound to '0.0.0.0' so Render can accurately route traffic to this container
+app.listen(PORT, '0.0.0.0', () => {
     console.log(`[*] Sentinel-X C2 Online on port ${PORT}`);
     console.log(`[*] Security Shields: TUNED & ACTIVE`);
 });

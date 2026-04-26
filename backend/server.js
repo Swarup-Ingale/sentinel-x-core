@@ -84,7 +84,7 @@ app.post('/api/scan', async (req, res) => {
     console.log(`[*] Initiating Sentinel-X Agent -> ${targetUrl}`);
     
     const agentPath = path.join(__dirname, '../agent/agent.py');
-    const pythonProcess = spawn('python', [agentPath, targetUrl]);
+    const pythonProcess = spawn('python3', [agentPath, targetUrl]);
 
     let dataString = '';
 
